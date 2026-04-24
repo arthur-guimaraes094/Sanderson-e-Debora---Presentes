@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import PresenteCard from '@/components/PresenteCard'
+import SuccessRedirectHandler from '@/components/SuccessRedirectHandler'
 
 import Countdown from '@/components/Countdown'
 
@@ -27,6 +28,7 @@ export default async function Home() {
 
   return (
     <main>
+      <SuccessRedirectHandler />
       {/* Hero Section */}
       <section style={{
         backgroundImage: 'url("/hero.png")',

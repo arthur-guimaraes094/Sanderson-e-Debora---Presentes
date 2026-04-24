@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { resgatarPresente } from '@/actions/resgatarPresente'
-
+import { gerarPagamento } from '@/actions/gerarPagamento'
 interface ResgateFormProps {
   presenteId: string
   presenteNome: string
@@ -14,7 +13,6 @@ export default function ResgateForm({ presenteId, presenteNome, onClose, onSucce
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [fotoName, setFotoName] = useState('')
-  const [compName, setCompName] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
   const errorRef = useRef<HTMLDivElement>(null)
 
@@ -80,13 +78,11 @@ export default function ResgateForm({ presenteId, presenteNome, onClose, onSucce
       formData.append('nome', nomeInput.value)
 
       const fotoInput = formElement.elements.namedItem('foto') as HTMLInputElement
-      const compInput = formElement.elements.namedItem('comprovante') as HTMLInputElement
       
       let fotoFile = fotoInput.files?.[0]
-      let compFile = compInput.files?.[0]
 
-      if (!fotoFile || !compFile) {
-        setError('Por favor, anexe a foto e o comprovante.')
+      if (!fotoFile) {
+        setError('Por favor, anexe sua foto para o mural.')
         setLoading(false)
         return
       }
@@ -97,33 +93,17 @@ export default function ResgateForm({ presenteId, presenteNome, onClose, onSucce
         return
       }
 
-      if (!compFile.type.startsWith('image/') && compFile.type !== 'application/pdf') {
-        setError('O formato do comprovante não é suportado. Envie uma imagem ou um arquivo PDF.')
-        setLoading(false)
-        return
-      }
-
-      // Comprime a foto do convidado (muito importante para fotos tiradas direto da câmera do celular)
+      // Comprime a foto do convidado
       fotoFile = await compressImage(fotoFile)
       formData.append('foto', fotoFile)
 
-      // Comprime o comprovante se também for uma imagem
-      if (compFile.type.startsWith('image/')) {
-        compFile = await compressImage(compFile)
-      }
-      formData.append('comprovante', compFile)
-
-      const result = await resgatarPresente(formData)
+      const result = await gerarPagamento(formData)
 
       if (result?.error) {
         setError(result.error)
-      } else {
-        // Sucesso: apenas fecha o modal e deixa o Next.js revalidar a página
-        if (onSuccess) {
-          const nomeInput = formElement.elements.namedItem('nome') as HTMLInputElement
-          onSuccess(nomeInput.value)
-        }
-        onClose()
+      } else if (result?.initPoint) {
+        // Sucesso: Redireciona para o Mercado Pago
+        window.location.href = result.initPoint
       }
     } catch (err) {
       console.error('Erro no envio do formulário:', err)
@@ -192,31 +172,13 @@ export default function ResgateForm({ presenteId, presenteNome, onClose, onSucce
             {fotoName && <div className="file-name">{fotoName}</div>}
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Comprovante PIX</label>
-            <p style={{ fontSize: '0.875rem', color: 'var(--color-text-light)', marginBottom: '0.5rem' }}>
-              Chave PIX: <strong>123.456.789-00</strong> (Sanderson)
-            </p>
-            <div className="file-input-wrapper">
-              <span>{compName ? '📄 Comprovante anexado' : 'Anexar comprovante'}</span>
-              <input 
-                type="file" 
-                name="comprovante" 
-                accept="image/*,.pdf" 
-                required 
-                onChange={(e) => setCompName(e.target.files?.[0]?.name || '')}
-              />
-            </div>
-            {compName && <div className="file-name">{compName}</div>}
-          </div>
-
           <button 
             type="submit" 
             className={`btn btn-primary ${loading ? 'btn-disabled' : ''}`} 
             style={{ width: '100%', marginTop: '1rem', padding: '1rem' }}
             disabled={loading}
           >
-            {loading ? 'Enviando...' : 'Confirmar Resgate'}
+            {loading ? 'Gerando Pagamento...' : 'Ir para Pagamento (Mercado Pago)'}
           </button>
         </form>
       </div>
