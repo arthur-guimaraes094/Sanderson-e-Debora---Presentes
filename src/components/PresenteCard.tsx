@@ -23,6 +23,7 @@ interface PresenteCardProps {
 export default function PresenteCard({ presente, resgate }: PresenteCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [successName, setSuccessName] = useState<string | null>(null)
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -148,21 +149,28 @@ export default function PresenteCard({ presente, resgate }: PresenteCardProps) {
                 }}
               />
 
-              {/* Nome do convidado escrito na parte de baixo do polaroid */}
               <div style={{
                 position: 'absolute',
-                bottom: '10%',
-                left: 0,
-                width: '100%',
+                bottom: '2%', // Desce mais um pouquinho para a ponta do polaroid
+                left: '5%',
+                width: '90%',
+                height: '18%', // Ocupa rigorosamente apenas o espaço branco do final
+                display: 'flex',
+                alignItems: 'center', // Se ficar grande, cresce para baixo e para cima, mas como a altura é 18%, e a foto acaba em 78%, não deve passar.
+                justifyContent: 'center',
                 textAlign: 'center',
                 zIndex: 3,
-                padding: '0 10px'
+                overflow: 'hidden' // Corta o que passar
               }}>
                 <span style={{ 
                   fontFamily: 'var(--font-cursive)', 
-                  fontSize: 'clamp(1.2rem, 5vw, 1.8rem)', 
+                  fontSize: 'clamp(0.8rem, 3.5vw, 1.2rem)', // Fonte reduzida para caber nomes como "Arthur e Gabi" em 2 linhas sem estourar
                   color: '#2C363F',
-                  lineHeight: 1
+                  lineHeight: 0.9, // Reduz o espaço entre as linhas
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2, // Permite 2 linhas
+                  WebkitBoxOrient: 'vertical',
+                  wordBreak: 'break-word'
                 }}>
                   {resgate.nome_convidado}
                 </span>
@@ -194,7 +202,60 @@ export default function PresenteCard({ presente, resgate }: PresenteCardProps) {
           presenteId={presente.id}
           presenteNome={presente.nome}
           onClose={() => setIsModalOpen(false)}
+          onSuccess={(nome) => setSuccessName(nome)}
         />
+      )}
+
+      {successName && (
+        <div className="modal-overlay" onClick={() => setSuccessName(null)} style={{ zIndex: 1000 }}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ 
+            padding: '3rem 2rem', 
+            backgroundColor: 'var(--color-card-bg)', 
+            border: '2px solid var(--color-primary-light)',
+            textAlign: 'center',
+            maxWidth: '500px'
+          }}>
+            <button className="modal-close" onClick={() => setSuccessName(null)}>&times;</button>
+            
+            <h2 style={{ 
+              fontFamily: 'var(--font-cursive)', 
+              fontSize: '3rem', 
+              color: 'var(--color-primary-light)', 
+              marginBottom: '1.5rem',
+              lineHeight: 1
+            }}>
+              Muito Obrigado!
+            </h2>
+            
+            <p style={{ 
+              fontSize: '1.25rem', 
+              color: 'var(--color-text)', 
+              lineHeight: 1.6,
+              marginBottom: '1rem'
+            }}>
+              <strong style={{ color: 'var(--color-primary-dark)' }}>{successName}</strong>,<br/>
+              agradecemos de coração por fazer parte deste momento tão especial em nossas vidas e por este presente incrível!
+            </p>
+            
+            <p style={{ 
+              marginTop: '1.5rem', 
+              fontSize: '1.1rem', 
+              color: 'var(--color-text-light)',
+              fontFamily: 'var(--font-cursive)'
+            }}>
+              Com carinho, <br/>
+              <span style={{ fontSize: '1.5rem' }}>Sanderson & Débora</span>
+            </p>
+            
+            <button 
+              className="btn btn-primary" 
+              style={{ marginTop: '2.5rem', width: '100%', padding: '1rem' }}
+              onClick={() => setSuccessName(null)}
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
       )}
     </>
   )

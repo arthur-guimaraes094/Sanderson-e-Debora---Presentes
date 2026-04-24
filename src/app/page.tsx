@@ -29,21 +29,36 @@ export default async function Home() {
     <main>
       {/* Hero Section */}
       <section style={{
-        backgroundImage: 'url("/hero.png")', // Assumindo que você vai salvar a imagem na pasta public como hero.png
+        backgroundImage: 'url("/hero.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end', // Joga o contador e o botão para baixo, para não tampar o rosto de vocês
+        justifyContent: 'space-between', // Distribui o texto no topo e na base
         alignItems: 'center',
         textAlign: 'center',
-        padding: '2rem',
+        padding: '10vh 2rem 5rem 2rem', // Espaçamento superior e inferior
         position: 'relative'
       }}>
-        <div className="container animate-fade-in" style={{ zIndex: 10, paddingBottom: '3rem', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          {/* A imagem hero.png já contém todo o texto e design necessário */}
+        
+        {/* Topo: Save the Date */}
+        <div className="animate-fade-in" style={{ width: '100%', maxWidth: '700px', zIndex: 10 }}>
+          <img 
+            src="/Save-the-date.png" 
+            alt="Save the Date" 
+            style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+          />
+        </div>
+
+        {/* Base: Nomes e Data */}
+        <div className="animate-fade-in" style={{ width: '100%', maxWidth: '600px', zIndex: 10, marginBottom: '2rem' }}>
+          <img 
+            src="/Debora&Sanderson+data.png" 
+            alt="Débora e Sanderson - 25 de Julho" 
+            style={{ width: '100%', height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.3))' }}
+          />
         </div>
 
         {/* Scroll Indicator - Seta para baixo */}
@@ -75,8 +90,52 @@ export default async function Home() {
         </a>
       </section>
 
+      {/* Introdução aos Convidados */}
+      <section style={{ padding: 'var(--spacing-xxl) 0 0', backgroundColor: 'var(--color-bg)' }}>
+        <div className="container" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', padding: '0 1rem' }}>
+          <h2 style={{ 
+            fontFamily: 'var(--font-cursive)', 
+            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', 
+            color: 'var(--color-primary-light)', 
+            marginBottom: '1.5rem',
+            lineHeight: 1.2
+          }}>
+            Estamos Animados!
+          </h2>
+          
+          <p style={{ 
+            fontSize: '1.25rem', 
+            color: 'var(--color-text)', 
+            lineHeight: 1.8, 
+            marginBottom: '1.5rem' 
+          }}>
+            A contagem regressiva começou e não vemos a hora de encontrar cada um de vocês para celebrarmos juntos esse momento tão especial das nossas vidas. O nosso maior presente é, sem dúvidas, a sua presença!
+          </p>
+          
+          <p style={{ 
+            fontSize: '1.1rem', 
+            color: 'var(--color-text-light)', 
+            lineHeight: 1.7, 
+            marginBottom: '3rem' 
+          }}>
+            Muitos têm nos perguntado sobre presentes, então preparamos este mural. 
+            <br/><br/>
+            <strong>Fique à vontade, presentear não é uma regra ou obrigação.</strong> 
+            <br/>
+            Caso deseje nos mimar com alguma lembrança da lista, ficaremos imensamente felizes e gratos. Se não, seu abraço no grande dia já será inesquecível!
+          </p>
+          
+          <div style={{ 
+            width: '60px', 
+            height: '2px', 
+            backgroundColor: 'var(--color-primary)', 
+            margin: '0 auto' 
+          }} />
+        </div>
+      </section>
+
       {/* Grid de Presentes */}
-      <section id="lista-presentes" style={{ padding: 'var(--spacing-xxl) 0', backgroundColor: 'var(--color-bg)' }}>
+      <section id="lista-presentes" style={{ padding: 'var(--spacing-xl) 0 var(--spacing-xxl)', backgroundColor: 'var(--color-bg)' }}>
         <div className="container">
           <div className="gifts-grid">
             {presentes && presentes.map((presente) => {

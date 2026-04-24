@@ -1,20 +1,22 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { resgatarPresente } from '@/actions/resgatarPresente'
 
 interface ResgateFormProps {
   presenteId: string
   presenteNome: string
   onClose: () => void
+  onSuccess?: (nome: string) => void
 }
 
-export default function ResgateForm({ presenteId, presenteNome, onClose }: ResgateFormProps) {
+export default function ResgateForm({ presenteId, presenteNome, onClose, onSuccess }: ResgateFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [fotoName, setFotoName] = useState('')
   const [compName, setCompName] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
+  const errorRef = useRef<HTMLDivElement>(null)
 
   const compressImage = async (file: File, maxWidth = 1200): Promise<File> => {
     if (!file.type.startsWith('image/')) return file
@@ -57,6 +59,12 @@ export default function ResgateForm({ presenteId, presenteNome, onClose }: Resga
     })
   }
 
+  useEffect(() => {
+    if (error && errorRef.current) {
+      errorRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  }, [error])
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
@@ -83,6 +91,18 @@ export default function ResgateForm({ presenteId, presenteNome, onClose }: Resga
         return
       }
 
+      if (!fotoFile.type.startsWith('image/')) {
+        setError('O arquivo da foto não é suportado. Por favor, envie uma imagem (JPG, PNG, etc).')
+        setLoading(false)
+        return
+      }
+
+      if (!compFile.type.startsWith('image/') && compFile.type !== 'application/pdf') {
+        setError('O formato do comprovante não é suportado. Envie uma imagem ou um arquivo PDF.')
+        setLoading(false)
+        return
+      }
+
       // Comprime a foto do convidado (muito importante para fotos tiradas direto da câmera do celular)
       fotoFile = await compressImage(fotoFile)
       formData.append('foto', fotoFile)
@@ -99,6 +119,10 @@ export default function ResgateForm({ presenteId, presenteNome, onClose }: Resga
         setError(result.error)
       } else {
         // Sucesso: apenas fecha o modal e deixa o Next.js revalidar a página
+        if (onSuccess) {
+          const nomeInput = formElement.elements.namedItem('nome') as HTMLInputElement
+          onSuccess(nomeInput.value)
+        }
         onClose()
       }
     } catch (err) {
@@ -120,8 +144,23 @@ export default function ResgateForm({ presenteId, presenteNome, onClose }: Resga
         </div>
 
         {error && (
-          <div style={{ backgroundColor: 'var(--color-error)', color: 'white', padding: '1rem', borderRadius: '8px', marginBottom: '1rem' }}>
-            {error}
+          <div ref={errorRef} style={{ 
+            backgroundColor: '#fee2e2', 
+            color: '#b91c1c', 
+            padding: '1rem', 
+            borderRadius: '8px', 
+            marginBottom: '1.5rem',
+            border: '1px solid #f87171',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '0.75rem',
+            fontSize: '0.95rem'
+          }}>
+            <span style={{ fontSize: '1.25rem', lineHeight: 1 }}>⚠️</span>
+            <div>
+              <strong style={{ display: 'block', marginBottom: '0.25rem' }}>Atenção:</strong>
+              {error}
+            </div>
           </div>
         )}
 
