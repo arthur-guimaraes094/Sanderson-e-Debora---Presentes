@@ -16,23 +16,96 @@ export default function ResgateForm({ presenteId, presenteNome, onClose }: Resga
   const [compName, setCompName] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
 
+  const compressImage = async (file: File, maxWidth = 1200): Promise<File> => {
+    if (!file.type.startsWith('image/')) return file
+    
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = (event) => {
+        const img = new Image()
+        img.src = event.target?.result as string
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          let width = img.width
+          let height = img.height
+
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width)
+            width = maxWidth
+          }
+
+          canvas.width = width
+          canvas.height = height
+          const ctx = canvas.getContext('2d')
+          if (!ctx) return resolve(file)
+
+          ctx.drawImage(img, 0, 0, width, height)
+          
+          canvas.toBlob((blob) => {
+            if (!blob) return resolve(file)
+            const compressedFile = new File([blob], file.name, {
+              type: 'image/jpeg',
+              lastModified: Date.now(),
+            })
+            resolve(compressedFile)
+          }, 'image/jpeg', 0.8)
+        }
+        img.onerror = () => resolve(file)
+      }
+      reader.onerror = () => resolve(file)
+    })
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    const formData = new FormData(e.currentTarget)
-    formData.append('presente_id', presenteId)
+    try {
+      const formElement = e.currentTarget
+      const formData = new FormData()
+      
+      formData.append('presente_id', presenteId)
+      
+      const nomeInput = formElement.elements.namedItem('nome') as HTMLInputElement
+      formData.append('nome', nomeInput.value)
 
-    const result = await resgatarPresente(formData)
+      const fotoInput = formElement.elements.namedItem('foto') as HTMLInputElement
+      const compInput = formElement.elements.namedItem('comprovante') as HTMLInputElement
+      
+      let fotoFile = fotoInput.files?.[0]
+      let compFile = compInput.files?.[0]
 
-    if (result.error) {
-      setError(result.error)
+      if (!fotoFile || !compFile) {
+        setError('Por favor, anexe a foto e o comprovante.')
+        setLoading(false)
+        return
+      }
+
+      // Comprime a foto do convidado (muito importante para fotos tiradas direto da câmera do celular)
+      fotoFile = await compressImage(fotoFile)
+      formData.append('foto', fotoFile)
+
+      // Comprime o comprovante se também for uma imagem
+      if (compFile.type.startsWith('image/')) {
+        compFile = await compressImage(compFile)
+      }
+      formData.append('comprovante', compFile)
+
+      const result = await resgatarPresente(formData)
+
+      if (result?.error) {
+        setError(result.error)
+      } else {
+        // Sucesso: apenas fecha o modal e deixa o Next.js revalidar a página
+        onClose()
+      }
+    } catch (err) {
+      console.error('Erro no envio do formulário:', err)
+      setError('A foto é muito grande ou ocorreu um erro de conexão. Tente novamente.')
+    } finally {
       setLoading(false)
-    } else {
-      // Sucesso: apenas fecha o modal e deixa o Next.js revalidar a página
-      setLoading(false)
-      onClose()
     }
   }
 
