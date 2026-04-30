@@ -4,14 +4,15 @@ import { supabaseAdmin } from '@/lib/supabase'
 
 export async function submitRSVP(formData: {
   nome: string
+  cpf: string
   comparecera: boolean
   mensagem: string
 }) {
   try {
-    const { nome, comparecera, mensagem } = formData
+    const { nome, cpf, comparecera, mensagem } = formData
 
-    if (!nome) {
-      return { success: false, error: 'O nome é obrigatório.' }
+    if (!nome || !cpf) {
+      return { success: false, error: 'Nome e CPF são obrigatórios.' }
     }
 
     // 1. Salvar no Supabase
@@ -20,6 +21,7 @@ export async function submitRSVP(formData: {
       .insert([
         {
           nome,
+          cpf,
           comparecera,
           mensagem,
         },
@@ -36,7 +38,7 @@ export async function submitRSVP(formData: {
 
     if (token && chatId) {
       const status = comparecera ? '✅ Confirmado' : '❌ Não poderá ir'
-      const text = `*Nova Confirmação de Presença!* \n\n*Nome:* ${nome}\n*Status:* ${status}\n*Mensagem:* ${mensagem || 'Sem mensagem'}`
+      const text = `*Nova Confirmação de Presença!* \n\n*Nome:* ${nome}\n*CPF:* ${cpf}\n*Status:* ${status}\n*Mensagem:* ${mensagem || 'Sem mensagem'}`
 
       try {
         await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {

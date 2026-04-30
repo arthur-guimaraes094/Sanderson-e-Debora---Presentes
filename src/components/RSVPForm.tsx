@@ -5,22 +5,34 @@ import { submitRSVP } from '@/actions/rsvp'
 
 export default function RSVPForm() {
   const [nome, setNome] = useState('')
+  const [cpf, setCpf] = useState('')
   const [comparecera, setComparecera] = useState<boolean | null>(null)
   const [mensagem, setMensagem] = useState('')
   const [isPending, startTransition] = useTransition()
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
 
+  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '') // Remove tudo que não é dígito
+    if (value.length <= 11) {
+      // Aplica a máscara 000.000.000-00
+      value = value.replace(/(\d{3})(\d)/, '$1.$2')
+      value = value.replace(/(\d{3})(\d)/, '$1.$2')
+      value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+      setCpf(value)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!nome || comparecera === null) {
-      setError('Por favor, preencha seu nome e confirme sua presença.')
+    if (!nome || !cpf || comparecera === null) {
+      setError('Por favor, preencha seu nome, CPF e confirme sua presença.')
       return
     }
 
     setError('')
     startTransition(async () => {
-      const result = await submitRSVP({ nome, comparecera, mensagem })
+      const result = await submitRSVP({ nome, cpf, comparecera, mensagem })
       if (result.success) {
         setSubmitted(true)
       } else {
@@ -68,13 +80,26 @@ export default function RSVPForm() {
         <br />
         <form onSubmit={handleSubmit} className="rsvp-form">
           <div className="rsvp-group">
-            <label className="rsvp-label">Seu nome*</label>
+            <label className="rsvp-label">Seu nome completo*</label>
             <input 
               type="text" 
               className="rsvp-input" 
               placeholder="Digite seu nome completo"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
+              disabled={isPending}
+              required
+            />
+          </div>
+
+          <div className="rsvp-group">
+            <label className="rsvp-label">Seu CPF*</label>
+            <input 
+              type="text" 
+              className="rsvp-input" 
+              placeholder="000.000.000-00"
+              value={cpf}
+              onChange={handleCpfChange}
               disabled={isPending}
               required
             />
