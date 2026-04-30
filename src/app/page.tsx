@@ -3,6 +3,7 @@ import PresenteCard from '@/components/PresenteCard'
 import SuccessRedirectHandler from '@/components/SuccessRedirectHandler'
 
 import Countdown from '@/components/Countdown'
+import RSVPForm from '@/components/RSVPForm'
 
 export const revalidate = 0 
 
@@ -211,10 +212,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer style={{ padding: 'var(--spacing-xl) 0', textAlign: 'center', borderTop: '1px solid var(--color-border)', backgroundColor: 'var(--color-card-bg)' }}>
-        <p style={{ color: 'var(--color-text-light)' }}>Com carinho, Sanderson e Debora ❤️</p>
-      </footer>
+      {/* RSVP Section */}
+      <RSVPForm />
     </main>
   )
 }

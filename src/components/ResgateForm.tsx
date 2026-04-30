@@ -115,12 +115,25 @@ export default function ResgateForm({ presenteId, presenteNome, onClose, onSucce
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ backgroundColor: '#fef6e5' }}>
         <button className="modal-close" onClick={onClose}>&times;</button>
         
-        <div className="text-center" style={{ marginBottom: '1.5rem' }}>
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Resgatar Presente</h2>
-          <p style={{ color: 'var(--color-text-light)' }}>Você está escolhendo: <strong>{presenteNome}</strong></p>
+        <div className="text-center" style={{ marginBottom: '2.5rem' }}>
+          <h2 style={{ 
+            fontFamily: "'TT Lovelies Script', cursive", 
+            fontSize: '3rem', 
+            marginBottom: '0.5rem',
+            color: 'var(--color-primary)',
+            fontWeight: 'normal'
+          }}>
+            Resgatar Presente
+          </h2>
+          <p style={{ 
+            color: 'var(--color-text-light)', 
+            fontSize: '1rem' 
+          }}>
+            Você está escolhendo: <strong style={{ color: 'var(--color-primary)' }}>{presenteNome}</strong>
+          </p>
         </div>
 
         {error && (
@@ -146,21 +159,33 @@ export default function ResgateForm({ presenteId, presenteNome, onClose, onSucce
 
         <form ref={formRef} onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label" htmlFor="nome">Seu Nome Completo</label>
+            <label className="form-label" htmlFor="nome" style={{ fontFamily: "'Prata', serif", fontSize: '1.1rem' }}>
+              Seu Nome Completo
+            </label>
             <input 
               type="text" 
               id="nome" 
               name="nome" 
-              className="form-input" 
+              className="form-input rsvp-input" 
               placeholder="Ex: João da Silva" 
+              style={{ backgroundColor: '#fff', color: '#333' }}
               required 
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label">Sua Foto (Para o mural)</label>
-            <div className="file-input-wrapper">
-              <span>{fotoName ? '📷 Foto selecionada' : 'Clique ou arraste uma foto'}</span>
+            <label className="form-label" style={{ fontFamily: "'Prata', serif", fontSize: '1.1rem' }}>
+              Sua Foto (Para o mural)
+            </label>
+            <div className="file-input-wrapper" style={{ 
+              border: '2px dashed var(--color-border)',
+              padding: '2rem',
+              borderRadius: '12px',
+              backgroundColor: '#faf9f6'
+            }}>
+              <span style={{ fontSize: '1.1rem' }}>
+                {fotoName ? '📷 Foto selecionada' : 'Clique ou arraste uma foto'}
+              </span>
               <input 
                 type="file" 
                 name="foto" 
@@ -169,13 +194,19 @@ export default function ResgateForm({ presenteId, presenteNome, onClose, onSucce
                 onChange={(e) => setFotoName(e.target.files?.[0]?.name || '')}
               />
             </div>
-            {fotoName && <div className="file-name">{fotoName}</div>}
+            {fotoName && <div className="file-name" style={{ textAlign: 'center', marginTop: '0.5rem' }}>{fotoName}</div>}
           </div>
 
           <button 
             type="submit" 
-            className={`btn btn-primary ${loading ? 'btn-disabled' : ''}`} 
-            style={{ width: '100%', marginTop: '1rem', padding: '1rem' }}
+            className={`rsvp-submit-btn ${loading ? 'btn-disabled' : ''}`} 
+            style={{ 
+              width: '100%', 
+              marginTop: '1.5rem', 
+              padding: '1.2rem',
+              fontSize: '1.1rem',
+              cursor: loading ? 'not-allowed' : 'pointer'
+            }}
             disabled={loading}
           >
             {loading ? 'Gerando Pagamento...' : 'Ir para Pagamento (Mercado Pago)'}
