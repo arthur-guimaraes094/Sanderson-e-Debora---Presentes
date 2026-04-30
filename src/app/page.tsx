@@ -134,6 +134,55 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Manual dos Convidados */}
+      <section className="manual-section">
+        <h2 className="manual-title">Manual dos convidados</h2>
+        
+        <div className="manual-list">
+          <div className="manual-item">
+            <img src="/Confirme sua presenca.svg" alt="Confirme sua presença" />
+          </div>
+          <div className="manual-item">
+            <img src="/Tire fotos.svg" alt="Tire bastante fotos e compartilhe conosco" />
+          </div>
+          <div className="manual-item">
+            <img src="/Evitar atrasos.svg" alt="Se organize com antecedência para evitar atrasos" />
+          </div>
+          <div className="manual-item">
+            <img src="/Traje social.svg" alt="Indicamos o uso de traje social" />
+          </div>
+          <div className="manual-item">
+            <img src="/Aproveite bastante.svg" alt="Aproveite bastante" />
+          </div>
+        </div>
+
+        <div className="manual-logo">
+          <img src="/S&D.svg" alt="S&D Logo" />
+        </div>
+      </section>
+
+      {/* Versículo Bíblico */}
+      <section className="verse-section" style={{ backgroundColor: 'var(--color-bg)', padding: '6rem 1.5rem' }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'center' }}>
+          <img 
+            src="/isaias4120.svg" 
+            alt="Isaías 41:20" 
+            style={{ width: '100%', maxWidth: '800px', height: 'auto' }} 
+          />
+        </div>
+      </section>
+
+      {/* Intro Lista de Presentes */}
+      <section className="gifts-intro" style={{ backgroundColor: 'var(--color-bg)', padding: '0 1.5rem 4rem' }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'center' }}>
+          <img 
+            src="/lista de presentes abaixo.svg" 
+            alt="Informações da lista de presentes" 
+            style={{ width: '100%', maxWidth: '800px', height: 'auto' }} 
+          />
+        </div>
+      </section>
+
       {/* Grid de Presentes */}
       <section id="lista-presentes" style={{ padding: 'var(--spacing-xl) 0 var(--spacing-xxl)', backgroundColor: 'var(--color-bg)' }}>
         <div className="container">
