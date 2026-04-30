@@ -30,109 +30,107 @@ export default async function Home() {
     <main>
       <SuccessRedirectHandler />
       {/* Hero Section */}
-      <section style={{
-        backgroundImage: 'url("/hero.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between', // Distribui o texto no topo e na base
-        alignItems: 'center',
-        textAlign: 'center',
-        padding: '10vh 2rem 5rem 2rem', // Espaçamento superior e inferior
-        position: 'relative'
-      }}>
+      <section className="hero-section">
         
-        {/* Topo: Save the Date */}
-        <div className="animate-fade-in" style={{ width: '100%', maxWidth: '700px', zIndex: 10 }}>
+        <div className="animate-fade-in" style={{ width: '100%', maxWidth: '500px', zIndex: 10 }}>
           <img 
-            src="/Save-the-date.png" 
-            alt="Save the Date" 
+            src="/Sanderson & Débora.svg" 
+            alt="Sanderson & Débora" 
             style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
           />
         </div>
-
-        {/* Base: Nomes e Data */}
-        <div className="animate-fade-in" style={{ width: '100%', maxWidth: '600px', zIndex: 10, marginBottom: '2rem' }}>
-          <img 
-            src="/Debora&Sanderson+data.png" 
-            alt="Débora e Sanderson - 25 de Julho" 
-            style={{ width: '100%', height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.3))' }}
-          />
-        </div>
-
-        {/* Scroll Indicator - Seta para baixo */}
-        <a 
-          href="#lista-presentes"
-          style={{ 
-            position: 'absolute', 
-            bottom: '0.5rem', 
-            left: '50%', 
-            marginLeft: '-15px', // Metade da largura para centralizar perfeito
-            animation: 'bounceDown 2s infinite',
-            cursor: 'pointer',
-            zIndex: 20
-          }}
-        >
-          <svg 
-            width="30" 
-            height="30" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="#FFFFFF" 
-            strokeWidth="2.5" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-            style={{ filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.5))' }}
-          >
-            <path d="M6 9l6 6 6-6"/>
-          </svg>
-        </a>
       </section>
 
       {/* Introdução aos Convidados */}
-      <section style={{ padding: 'var(--spacing-xxl) 0 0', backgroundColor: 'var(--color-bg)' }}>
-        <div className="container" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', padding: '0 1rem' }}>
-          <h2 style={{ 
-            fontFamily: 'var(--font-cursive)', 
-            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', 
-            color: 'var(--color-primary-light)', 
-            marginBottom: '1.5rem',
-            lineHeight: 1.2
-          }}>
-            Estamos Animados!
-          </h2>
-          
-          <p style={{ 
-            fontSize: '1.25rem', 
-            color: 'var(--color-text)', 
-            lineHeight: 1.8, 
-            marginBottom: '1.5rem' 
-          }}>
-            A contagem regressiva começou e não vemos a hora de encontrar cada um de vocês para celebrarmos juntos esse momento tão especial das nossas vidas. O nosso maior presente é, sem dúvidas, a sua presença!
-          </p>
-          
-          <p style={{ 
-            fontSize: '1.1rem', 
-            color: 'var(--color-text-light)', 
-            lineHeight: 1.7, 
-            marginBottom: '3rem' 
-          }}>
-            Muitos têm nos perguntado sobre presentes, então preparamos este mural. 
-            <br/><br/>
-            <strong>Fique à vontade, presentear não é uma regra ou obrigação.</strong> 
-            <br/>
-            Caso deseje nos mimar com alguma lembrança da lista, ficaremos imensamente felizes e gratos. Se não, seu abraço no grande dia já será inesquecível!
-          </p>
-          
+      <section className="intro-section">
+        <div className="container" style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center', padding: '0 1rem' }}>
+          <img 
+            src="/introducao-convidados.svg" 
+            alt="Introdução aos Convidados" 
+            style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+          />
+        </div>
+      </section>
+
+      <section className="agenda-section">
+        <div className="petals-container">
+          <img 
+            src="/petalas.svg" 
+            alt="" 
+            style={{ width: '100%', height: 'auto', display: 'block' }} 
+          />
+        </div>
+
+        <div className="container" style={{ 
+          maxWidth: '1000px', 
+          margin: '0 auto', 
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '4rem'
+        }}>
           <div style={{ 
-            width: '60px', 
-            height: '2px', 
-            backgroundColor: 'var(--color-primary)', 
-            margin: '0 auto' 
-          }} />
+            display: 'flex', 
+            flexDirection: 'row', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            gap: '4rem',
+            flexWrap: 'wrap',
+            width: '100%'
+          }}>
+            <div style={{ maxWidth: '550px', width: '100%' }}>
+              <img 
+                src="/agenda.svg" 
+                alt="Agenda 25 de Julho de 2026" 
+                style={{ width: '100%', height: 'auto', filter: 'drop-shadow(0px 10px 20px rgba(0,0,0,0.2))' }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Seção Localização */}
+      <section className="location-section">
+        <div className="location-frame">
+          <img src="/borda-localizacao.svg" alt="" className="location-border" />
+          
+          <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', width: '100%' }}>
+            <div className="desktop-only" style={{ 
+              borderRadius: '12px', 
+              overflow: 'hidden', 
+              boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+              maxWidth: '800px',
+              margin: '0 auto'
+            }}>
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3969.7422625115964!2d-35.3215266!3d-5.750194899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7b3ad7b91d9589f%3A0x18ff8721029d8c63!2zVmlsbGFtb3LDoSBSZWNlcMOnw7Vlcw!5e0!3m2!1spt-BR!2sbr!4v1777524122604!5m2!1spt-BR!2sbr" 
+                width="100%" 
+                height="450" 
+                style={{ border: 0, display: 'block' }} 
+                allowFullScreen={true} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+
+            <div className="mobile-only" style={{ 
+              borderRadius: '12px', 
+              overflow: 'hidden', 
+              boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+              maxWidth: '800px',
+              margin: '0 auto'
+            }}>
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3969.7422625115964!2d-35.3215266!3d-5.750194899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7b3ad7b91d9589f%3A0x18ff8721029d8c63!2zVmlsbGFtb3LDoSBSZWNlcMOnw7Vlcw!5e0!3m2!1spt-BR!2sbr!4v1777524611210!5m2!1spt-BR!2sbr" 
+                width="100%" 
+                height="150" 
+                style={{ border: 0, display: 'block' }} 
+                allowFullScreen={true} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+          </div>
         </div>
       </section>
 
