@@ -6,11 +6,9 @@ export async function GET(request: Request) {
   const force = searchParams.get('force') === 'true';
 
   // Verificação de segurança (padrão Vercel Cron)
-  // Permitimos bypass se o parâmetro 'force' estiver presente para facilitar o teste manual do usuário
   const authHeader = request.headers.get('authorization');
   const isAuthorized = process.env.NODE_ENV !== 'production' || 
-                       authHeader === `Bearer ${process.env.CRON_SECRET}` || 
-                       force;
+                       authHeader === `Bearer ${process.env.CRON_SECRET}`;
 
   if (!isAuthorized) {
     return new Response('Unauthorized', { status: 401 });
