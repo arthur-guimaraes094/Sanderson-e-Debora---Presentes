@@ -18,7 +18,7 @@ export default async function Home() {
         foto_convidado_url
       )
     `)
-    .order('criado_em', { ascending: true })
+    .order('nome', { ascending: true })
 
   if (error) {
     console.error('Erro ao buscar presentes:', error)
