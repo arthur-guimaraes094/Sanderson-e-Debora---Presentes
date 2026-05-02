@@ -14,32 +14,12 @@ export default function FloatingMenu() {
     const bodyRect = document.body.getBoundingClientRect().top
     const elementRect = element.getBoundingClientRect().top
     const elementPosition = elementRect - bodyRect
-    const targetPosition = elementPosition - offset
-    
-    const startPosition = window.pageYOffset
-    const distance = targetPosition - startPosition
-    const duration = 1200 // Aumentado para um deslizamento mais lento
-    let start: number | null = null
+    const offsetPosition = elementPosition - offset
 
-    const animation = (currentTime: number) => {
-      if (start === null) start = currentTime
-      const timeElapsed = currentTime - start
-      const run = easeInOutCubic(timeElapsed, startPosition, distance, duration)
-      window.scrollTo(0, run)
-      if (timeElapsed < duration) {
-        requestAnimationFrame(animation)
-      }
-    }
-
-    // Função Ease-in-out Cubic (mais suave que a anterior)
-    const easeInOutCubic = (t: number, b: number, c: number, d: number) => {
-      t /= d / 2
-      if (t < 1) return (c / 2) * t * t * t + b
-      t -= 2
-      return (c / 2) * (t * t * t + 2) + b
-    }
-
-    requestAnimationFrame(animation)
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    })
   }
 
   return (
