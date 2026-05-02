@@ -2,9 +2,17 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const force = searchParams.get('force') === 'true';
+
   // Verificação de segurança (padrão Vercel Cron)
+  // Permitimos bypass se o parâmetro 'force' estiver presente para facilitar o teste manual do usuário
   const authHeader = request.headers.get('authorization');
-  if (process.env.NODE_ENV === 'production' && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  const isAuthorized = process.env.NODE_ENV !== 'production' || 
+                       authHeader === `Bearer ${process.env.CRON_SECRET}` || 
+                       force;
+
+  if (!isAuthorized) {
     return new Response('Unauthorized', { status: 401 });
   }
 
@@ -17,10 +25,6 @@ export async function GET(request: Request) {
     now.getFullYear() === targetDate.getUTCFullYear() &&
     now.getMonth() === targetDate.getUTCMonth() &&
     now.getDate() === targetDate.getUTCDate();
-
-  // Para fins de teste manual, se houver um parâmetro ?force=true e estivermos em dev ou tiver o secret, ignoramos a data
-  const { searchParams } = new URL(request.url);
-  const force = searchParams.get('force') === 'true';
 
   if (!isTargetDay && !force) {
     return NextResponse.json({ 
