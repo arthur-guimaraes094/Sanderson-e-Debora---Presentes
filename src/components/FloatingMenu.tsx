@@ -57,7 +57,7 @@ export default function FloatingMenu() {
               transition: 'all 0.3s ease'
             }}
           >
-            🎁 Lista de Presentes
+            Lista de Presentes
           </button>
           <button 
             onClick={() => scrollTo('rsvp')}
@@ -75,7 +75,7 @@ export default function FloatingMenu() {
               transition: 'all 0.3s ease'
             }}
           >
-            ✅ Confirmar Presença
+            Confirmar Presença
           </button>
         </div>
       )}
