@@ -10,29 +10,16 @@ export default function FloatingMenu() {
     const element = document.getElementById(id)
     if (!element) return
 
-    const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - 80
-    const startPosition = window.pageYOffset
-    const distance = targetPosition - startPosition
-    const duration = 800 // Duração da animação em milisegundos
-    let start: number | null = null
+    const offset = 80
+    const bodyRect = document.body.getBoundingClientRect().top
+    const elementRect = element.getBoundingClientRect().top
+    const elementPosition = elementRect - bodyRect
+    const offsetPosition = elementPosition - offset
 
-    // Função de animação (Ease-in-out)
-    const animation = (currentTime: number) => {
-      if (start === null) start = currentTime
-      const timeElapsed = currentTime - start
-      const run = ease(timeElapsed, startPosition, distance, duration)
-      window.scrollTo(0, run)
-      if (timeElapsed < duration) requestAnimationFrame(animation)
-    }
-
-    const ease = (t: number, b: number, c: number, d: number) => {
-      t /= d / 2
-      if (t < 1) return (c / 2) * t * t + b
-      t--
-      return (-c / 2) * (t * (t - 2) - 1) + b
-    }
-
-    requestAnimationFrame(animation)
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    })
   }
 
   return (
