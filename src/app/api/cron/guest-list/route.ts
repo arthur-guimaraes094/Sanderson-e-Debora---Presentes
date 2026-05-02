@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     // Buscar todos os convidados que confirmaram presença
     const { data: confirmados, error } = await supabaseAdmin
       .from('confirmacoes')
-      .select('nome')
+      .select('nome, cpf')
       .eq('comparecera', true)
       .order('nome', { ascending: true });
 
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
     }
 
     // Formatar a lista para o Telegram
-    const listaFormatada = confirmados.map((c, i) => `${i + 1}. ${c.nome}`).join('\n');
+    const listaFormatada = confirmados.map((c, i) => `${i + 1}. ${c.nome} - CPF: ${c.cpf}`).join('\n');
     const total = confirmados.length;
     
     const text = `*📋 LISTA DE CONVIDADOS CONFIRMADOS*\n` +
