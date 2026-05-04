@@ -46,7 +46,8 @@ export async function GET(request: Request) {
     }
 
     // Formatar a lista para o Telegram
-    const listaFormatada = confirmados.map((c, i) => `${i + 1}. ${c.nome} - CPF: ${c.cpf}`).join('\n');
+    const escapeMarkdown = (text: string) => text.replace(/([_*\[`])/g, '\\$1');
+    const listaFormatada = confirmados.map((c, i) => `${i + 1}. ${escapeMarkdown(c.nome)} - CPF: ${c.cpf}`).join('\n');
     const total = confirmados.length;
     
     const text = `*📋 LISTA DE CONVIDADOS CONFIRMADOS*\n` +
@@ -84,8 +85,9 @@ export async function GET(request: Request) {
       count: total 
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Erro no Cron Job:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro desconhecido';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

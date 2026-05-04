@@ -37,8 +37,12 @@ export async function submitRSVP(formData: {
     const chatId = process.env.TELEGRAM_CHAT_ID
 
     if (token && chatId) {
+      const escapeMarkdown = (text: string) => text.replace(/([_*\[`])/g, '\\$1')
       const status = comparecera ? '✅ Confirmado' : '❌ Não poderá ir'
-      const text = `*Nova Confirmação de Presença!* \n\n*Nome:* ${nome}\n*CPF:* ${cpf}\n*Status:* ${status}\n*Mensagem:* ${mensagem || 'Sem mensagem'}`
+      const nomeSafe = escapeMarkdown(nome)
+      const mensagemSafe = escapeMarkdown(mensagem || 'Sem mensagem')
+      
+      const text = `*Nova Confirmação de Presença!* \n\n*Nome:* ${nomeSafe}\n*CPF:* ${cpf}\n*Status:* ${status}\n*Mensagem:* ${mensagemSafe}`
 
       try {
         await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {

@@ -30,8 +30,9 @@ export async function POST(request: Request) {
           respostaTexto = 'Ainda não há convidados confirmados.';
         } else {
           const total = confirmados.length;
+          const escapeMarkdown = (text: string) => text.replace(/([_*\[`])/g, '\\$1');
           const listaFormatada = confirmados
-            .map((c, i) => `${i + 1}. ${c.nome} - CPF: ${c.cpf}`)
+            .map((c, i) => `${i + 1}. ${escapeMarkdown(c.nome)} - CPF: ${c.cpf}`)
             .join('\n');
 
           respostaTexto = `*📋 LISTA DE CONVIDADOS CONFIRMADOS*\n` +
