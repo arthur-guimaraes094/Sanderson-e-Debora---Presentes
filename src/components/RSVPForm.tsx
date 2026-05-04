@@ -2,8 +2,13 @@
 
 import { useState, useTransition } from 'react'
 import { submitRSVP } from '@/actions/rsvp'
+import MessagesWall, { Mensagem } from './MessagesWall'
 
-export default function RSVPForm() {
+interface RSVPFormProps {
+  mensagens?: Mensagem[]
+}
+
+export default function RSVPForm({ mensagens = [] }: RSVPFormProps) {
   const [nome, setNome] = useState('')
   const [cpf, setCpf] = useState('')
   const [comparecera, setComparecera] = useState<boolean | null>(null)
@@ -76,6 +81,12 @@ export default function RSVPForm() {
       
       {/* Container do Formulário com Padding lateral */}
       <div className="container" style={{ padding: '4rem 1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        
+        {/* Mural de Mensagens */}
+        {mensagens.length > 0 && (
+          <MessagesWall mensagens={mensagens} />
+        )}
+
         <h2 className="rsvp-title">Confirme sua presença</h2>
         <br />
         <form onSubmit={handleSubmit} className="rsvp-form">

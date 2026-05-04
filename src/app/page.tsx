@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase'
+import { supabase, supabaseAdmin } from '@/lib/supabase'
 import PresenteCard from '@/components/PresenteCard'
 import SuccessRedirectHandler from '@/components/SuccessRedirectHandler'
 
@@ -22,6 +22,20 @@ export default async function Home() {
 
   if (error) {
     console.error('Erro ao buscar presentes:', error)
+  }
+
+  // Fetch mensagens dos noivos
+  const { data: confirmacoes, error: mensagensError } = await supabaseAdmin
+    .from('confirmacoes')
+    .select('nome, mensagem')
+    .neq('mensagem', 'EMPTY')
+    .neq('mensagem', '')
+    .not('mensagem', 'is', null)
+    .order('criado_em', { ascending: false })
+    .limit(20)
+
+  if (mensagensError) {
+    console.error('Erro ao buscar mensagens:', mensagensError)
   }
 
   // Define target date for Countdown (July 25 of next year, or current year depending on when this runs)
@@ -228,7 +242,7 @@ export default async function Home() {
       </section>
 
       {/* RSVP Section */}
-      <RSVPForm />
+      <RSVPForm mensagens={confirmacoes || []} />
     </main>
   )
 }
