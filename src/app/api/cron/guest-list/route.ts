@@ -14,9 +14,9 @@ export async function GET(request: Request) {
     return new Response('Unauthorized', { status: 401 });
   }
 
-  // Definir a data alvo: 12 de Maio de 2026
+  // Definir a data alvo: 12 de Junho de 2026
   const now = new Date();
-  const targetDate = new Date('2026-05-12');
+  const targetDate = new Date('2026-06-12');
   
   // Verificação de data (ano, mês e dia)
   const isTargetDay = 
@@ -26,7 +26,7 @@ export async function GET(request: Request) {
 
   if (!isTargetDay && !force) {
     return NextResponse.json({ 
-      message: 'Ainda não é a data alvo (12/05/2026).',
+      message: 'Ainda não é a data alvo (12/06/2026).',
       currentDate: now.toISOString().split('T')[0]
     });
   }
@@ -50,7 +50,7 @@ export async function GET(request: Request) {
     const total = confirmados.length;
     
     const text = `*📋 LISTA DE CONVIDADOS CONFIRMADOS*\n` +
-                 `*Data:* 12/05/2026\n` +
+                 `*Data:* 12/06/2026\n` +
                  `*Total:* ${total} pessoas\n\n` +
                  `${listaFormatada}\n\n` +
                  `_Esta é a lista consolidada de presença._`;

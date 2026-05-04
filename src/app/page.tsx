@@ -139,22 +139,12 @@ export default async function Home() {
       <section className="manual-section">
         <h2 className="manual-title">Manual dos convidados</h2>
         
-        <div className="manual-list">
-          <div className="manual-item">
-            <img src="/Confirme sua presenca.svg" alt="Confirme sua presença" />
-          </div>
-          <div className="manual-item">
-            <img src="/Tire fotos.svg" alt="Tire bastante fotos e compartilhe conosco" />
-          </div>
-          <div className="manual-item">
-            <img src="/Evitar atrasos.svg" alt="Se organize com antecedência para evitar atrasos" />
-          </div>
-          <div className="manual-item">
-            <img src="/Traje social.svg" alt="Indicamos o uso de traje social" />
-          </div>
-          <div className="manual-item">
-            <img src="/Aproveite bastante.svg" alt="Aproveite bastante" />
-          </div>
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '0 1rem' }}>
+          <img 
+            src="/Manual dos convidados.svg" 
+            alt="Manual dos convidados" 
+            style={{ width: '100%', maxWidth: '800px', height: 'auto' }} 
+          />
         </div>
 
         <div className="manual-logo">
@@ -164,12 +154,25 @@ export default async function Home() {
 
       {/* Versículo Bíblico */}
       <section className="verse-section" style={{ backgroundColor: 'var(--color-bg)', padding: '6rem 1.5rem' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'center' }}>
-          <img 
-            src="/isaias4120.svg" 
-            alt="Isaías 41:20" 
-            style={{ width: '100%', maxWidth: '800px', height: 'auto' }} 
-          />
+        <div className="container" style={{ textAlign: 'center', maxWidth: '850px' }}>
+          <p style={{ 
+            fontFamily: "'TT Lovelies Script', cursive", 
+            fontSize: 'clamp(1.5rem, 4vw, 2.8rem)', 
+            color: 'var(--color-primary)', 
+            lineHeight: '1.3',
+            marginBottom: '1.5rem',
+            fontWeight: 'normal'
+          }}>
+            “para que todos vejam, e saibam, e considerem, e juntamente entendam que a mão do senhor fez isso, e o Santo de Israel o criou.”
+          </p>
+          <p style={{ 
+            fontFamily: "'TT Lovelies Script', cursive", 
+            fontSize: 'clamp(1.2rem, 3vw, 2rem)', 
+            color: 'var(--color-primary)',
+            fontWeight: 'normal'
+          }}>
+            Isaías 41:20
+          </p>
         </div>
       </section>
 
