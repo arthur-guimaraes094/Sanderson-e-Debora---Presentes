@@ -133,25 +133,21 @@ export default function PresenteCard({ presente, resgate }: PresenteCardProps) {
                   bottom: '2%',
                   left: '5%',
                   width: '90%',
-                  height: '18%',
+                  height: '19%',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   textAlign: 'center',
-                  zIndex: 3,
-                  overflow: 'hidden'
+                  zIndex: 3
                 }}>
                   <span style={{ 
                     fontFamily: 'var(--font-cursive)', 
                     fontSize: 'clamp(0.8rem, 3.5vw, 1.2rem)',
                     color: '#2C363F',
-                    lineHeight: 0.9,
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
+                    lineHeight: 1.1,
                     wordBreak: 'break-word'
                   }}>
-                    {resgate.nome_convidado}
+                    {resgate.nome_convidado.trim().split(' ')[0]}
                   </span>
                 </div>
               </div>
